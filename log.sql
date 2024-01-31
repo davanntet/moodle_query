@@ -1,5 +1,5 @@
 use mdl;
-select _user.id as user_id,_course.id as course_id,
+select _user.id as user_id,_user.firstname,_user.lastname,_course.id as course_id,
 _course.fullname as course,count(distinct _log.id) as total_log ,
 count(distinct _log.id)/10 as 'avg_log_week'
 from mdl_user as _user

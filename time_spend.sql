@@ -1,5 +1,5 @@
 use mdl;
-select _user.id as user_id,
+select _user.id as user_id,_user.firstname,_user.lastname,
 sum(distinct _sessions.timemodified-_sessions.timecreated)/(60*60) as 'duration(hours)',
 min(_sessions.timecreated) as 'first',
 max(_sessions.timemodified) as 'last'

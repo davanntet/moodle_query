@@ -1,5 +1,5 @@
 use mdl;
-select _user.id as user_id,_course.id as course_id,_course.fullname as course, count(distinct _attendance_sessions.id) as session,
+select _user.id as user_id,_user.firstname,_user.lastname,_course.id as course_id,_course.fullname as course, count(distinct _attendance_sessions.id) as session,
 count(distinct CASE WHEN _attendance_statuses.acronym = 'P' THEN _attendance_log.id END) as Presence,
 count(distinct CASE WHEN _attendance_statuses.acronym = 'L' THEN _attendance_log.id END) as Late,
 count(distinct CASE WHEN _attendance_statuses.acronym = 'E' THEN _attendance_log.id END) as Excused,
