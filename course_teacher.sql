@@ -1,4 +1,4 @@
-use mdl;
+use moodles;
 select _user.id as user_id,_user.username as teacher_username,_user.firstname,_user.lastname,_course.id as course_id,_course.fullname as course,_course.startdate,_course.enddate
 from mdl_user as _user
 inner join mdl_role_assignments as _user_role on _user_role.userid = _user.id and _user_role.roleid=4

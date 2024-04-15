@@ -1,9 +1,22 @@
-use mdl;
-select _user.id as user_id,_user.firstname,_user.lastname,
-sum(distinct _sessions.timemodified-_sessions.timecreated)/(60*60) as 'duration(hours)',
-min(_sessions.timecreated) as 'first',
-max(_sessions.timemodified) as 'last'
-from mdl_user as _user
-inner join mdl_role_assignments as _user_role on _user_role.userid = _user.id and _user_role.roleid=5
-left join mdl_sessions as _sessions on _sessions.userid=_user.id
-group by _user.id;
+SELECT idnumber, courseid, SUM(time_spent) AS total_time_spent
+FROM (
+    SELECT idnumber, courseid,
+           CASE
+               WHEN @prev_userid = idnumber AND @prev_courseid = courseid THEN
+                   CASE
+                       WHEN (timecreated - @prev_timecreated) < 3600 THEN
+                           (timecreated - @prev_timecreated)
+                       ELSE
+                           0
+                   END
+               ELSE
+                   0
+           END AS time_spent,
+           @prev_userid := idnumber,
+           @prev_courseid := courseid,
+           @prev_timecreated := timecreated
+    FROM mdl_logstore_standard_log
+    CROSS JOIN (SELECT @prev_userid := NULL, @prev_courseid := NULL, @prev_timecreated := NULL) AS vars
+    ORDER BY idnumber, courseid, timecreated
+) AS time_spent_subquery
+GROUP BY idnumber, courseid;
